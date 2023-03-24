@@ -1,3 +1,4 @@
+from Decoradores import *
 class CuentaBancaria(): #Creamos la clase CuentaBancaria
     def __init__(self, nombre, saldo, Id, NumeroCuenta, FechaApertura):
         self.nombre = nombre
@@ -5,7 +6,7 @@ class CuentaBancaria(): #Creamos la clase CuentaBancaria
         self.Id = Id
         self.NumeroCuenta = NumeroCuenta
         self.FechaApertura = FechaApertura
-
+    @decorado1
     def depositar(self, cantidad): #Metodo para depositar dinero
         self.saldo += cantidad
     def retirar(self, cantidad): #Metodo para retirar dinero
