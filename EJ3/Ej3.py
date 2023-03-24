@@ -6,14 +6,16 @@ class CuentaBancaria(): #Creamos la clase CuentaBancaria
         self.Id = Id
         self.NumeroCuenta = NumeroCuenta
         self.FechaApertura = FechaApertura
-    @decorado1
+    @decoradorTransferencia
     def depositar(self, cantidad): #Metodo para depositar dinero
         self.saldo += cantidad
+    @decoradorRetirada
     def retirar(self, cantidad): #Metodo para retirar dinero
         if cantidad > self.saldo: #Si la cantidad a retirar es mayor al saldo
             print("No se puede retirar mas dinero del que se tiene") 
         else: #Si no
             self.saldo -= cantidad
+    @decoradorTransferencia
     def transferir(cuentaDeLaQueSeRetira, cuentaDeLaQueSeDeposita, cantidad): #Metodo para transferir dinero de una cuenta a otra
         if cantidad > cuentaDeLaQueSeRetira.saldo:
             print("No se puede retirar mas dinero del que se tiene")
@@ -32,21 +34,29 @@ class CuentaPlazoFijo(CuentaBancaria): #Creamos la clase CuentaPlazoFijo
         super().__init__(nombre, saldo, Id, NumeroCuenta, FechaApertura) #Llamada al constructor de la clase padre
         self.FechaVencimiento = FechaVencimiento #Atributos de la clase hija
         self.Interes = int(Interes)
+    @decoradorRetirada
     def retirar(self, cantidad): #Metodo para retirar dinero con un cierto interes
         if cantidad+cantidad*self.Interes/100 > self.saldo:
             print("No se puede retirar mas dinero del que se tiene")
         else:
             self.saldo -= cantidad+cantidad*self.Interes/100
+    @decoradorTransferencia
+    def depositar(self, cantidad):
+        return super().depositar(cantidad)
     def __str__(self):
         return "Cuenta de {} con un saldo de {} y un interes de {}".format(self.nombre, self.saldo, self.Interes)
 class CuentaVip(CuentaBancaria): #Creamos la clase CuentaVip
     def __init__(self, nombre, saldo, Id, NumeroCuenta, FechaApertura, Descubierto):
         super().__init__(nombre, saldo, Id, NumeroCuenta, FechaApertura) #Llamada al constructor de la clase padre
         self.Descubierto = Descubierto #Atributos de la clase hija
+    @decoradorRetirada
     def retirar(self, cantidad): #Metodo para retirar dinero con un cierto descubierto
         if cantidad > self.saldo+self.Descubierto:
             print("No se puede retirar mas dinero del que se tiene")
         else:
             self.saldo -= cantidad
+    @decoradorTransferencia
+    def depositar(self, cantidad):
+        return super().depositar(cantidad)
     def __str__(self):
         return "Cuenta de {} con un saldo de {} y un descubierto de {}".format(self.nombre, self.saldo, self.Descubierto)
